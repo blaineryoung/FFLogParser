@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FFLogParser": {
+      "commandName": "Project",
+      "commandLineArgs": "clientid.txt secret.txt"
+    }
+  }
+}
