@@ -50,6 +50,10 @@ Generated\ Files/
 TestResult.xml
 nunit-*.xml
 
+# files with secrets
+clientid.txt
+secret.txt
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
