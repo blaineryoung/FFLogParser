@@ -35,11 +35,19 @@ namespace FatedLogParser // Note: actual namespace depends on the project name.
 
             Tuple<int, int> currentTimestamp = new Tuple<int, int>(t.Item1, t.Item2);
             int daktId = p.Where(x => x.Value == "Dakt Cole").FirstOrDefault().Key;
+            int damageWindow = 0;
+            string damageWindowString = $"{damageWindow} - Fight Start";
 
-            Console.WriteLine("Time, Source, Ability, Target, Ammount, Type, Overheal, Tick");
-            for (int i = 0; i < 10; i++) // limit to 10 for testing
+            Console.WriteLine("Time, Source, Ability, Ammount, Type, Overheal, DamageWindow, Tick");
+            for (int i = 0; i < 100; i++) // limit to 10 for testing
             {
                 int highTime = currentTimestamp.Item1;
+
+                if (currentTimestamp.Item1 == currentTimestamp.Item2)
+                {
+                    break;
+                }
+
                 EventDatum[] events = await ffLogClient.GetEvents(reportId, currentTimestamp);
 
                 if (events.Length == 0)
@@ -60,6 +68,12 @@ namespace FatedLogParser // Note: actual namespace depends on the project name.
                     int time = (e.timestamp - t.Item1) /1000;
                     string abilityName = await ffLogClient.GetAbilityName(e.abilityGameID);
 
+                    if (e.type == "calculateddamage")
+                    {
+                        damageWindow++;
+                        damageWindowString = $"{damageWindow} - {abilityName}";
+                    }
+
                     if (abilityName == "Unknown")
                     {
                         continue;
@@ -77,7 +91,7 @@ namespace FatedLogParser // Note: actual namespace depends on the project name.
                         targetName = e.type == "heal" ? "Dakt Cole" : "Boss";
                     }
 
-                    Console.WriteLine($"{time}, {sourceName}, {abilityName},  {targetName}, {e.amount}, {e.type}, {e.overheal}, {e.tick}");
+                    Console.WriteLine($"{time}, {sourceName}, {abilityName}, {e.amount}, {e.type}, {e.overheal}, {damageWindowString}, {e.tick}");
                 }
 
                 currentTimestamp = new Tuple<int, int>(highTime, t.Item2);
