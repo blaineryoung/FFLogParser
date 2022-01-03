@@ -1,0 +1,67 @@
+{
+    reportData
+    {
+        report(code: "BFRxMhXCZWfybqrY")
+        {
+            fights
+            {
+                startTime
+                endTime
+            }
+        }
+    }
+}
+
+                    {
+                        "startTime": 3749095,
+                        "endTime": 4296628
+                    }
+					
+{
+    reportData
+    {
+        report(code: "BFRxMhXCZWfybqrY")
+        {
+            events(startTime: 3749095, endTime:4296628)
+            {
+                data
+            }
+        }
+    }
+}
+
+{
+    reportData
+    {
+        report(code: "BFRxMhXCZWfybqrY")
+        {
+            playerDetails(startTime: 3749095, endTime:4296628)
+        }
+    }
+}
+
+{
+    gameData
+    {
+        ability(id: 7392)
+        {
+
+                name
+                id
+
+        }
+    }
+}
+
+{
+    reportData
+    {
+        report(code: "BFRxMhXCZWfybqrY")
+        {
+            events(startTime: 3749095, endTime:4296628, dataType: DamageTaken)
+            {
+                data
+            }
+        }
+    }
+}

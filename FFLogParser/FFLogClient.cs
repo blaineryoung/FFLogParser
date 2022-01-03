@@ -69,6 +69,14 @@ namespace FatedLogParser
             return name;
         }
 
+        public async Task<PlayerDetails> GetPlayers(string reportId, Tuple<int, int> timestamp)
+        {
+            string raw = await this.MakeRequest(PlayerInfo.GetQuery(reportId, timestamp.Item1, timestamp.Item2));
+            PlayerDetails data = PlayerInfo.Deserialize(raw);
+
+            return data;
+        }
+
         private async Task<string> MakeRequest(string query)
         {
             var request = new HttpRequestMessage
