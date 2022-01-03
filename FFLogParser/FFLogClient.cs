@@ -62,7 +62,7 @@ namespace FatedLogParser
                 string raw = await this.MakeRequest(Ability.GetQuery(id));
                 AbilityDefinition ab = Ability.Deserialize(raw);
 
-                name = ab.name;
+                name = null == ab ? "Unknown" : ab.name;
                 abilityNames.Add(id, name);
             }
 
@@ -75,6 +75,38 @@ namespace FatedLogParser
             PlayerDetails data = PlayerInfo.Deserialize(raw);
 
             return data;
+        }
+
+        public async Task<EventDatum[]> GetEvents(string reportId, Tuple<int, int> timestamp)
+        {
+            string raw = await this.MakeRequest(EventInfo.GetQuery(reportId, timestamp.Item1, timestamp.Item2));
+            EventDatum[] data = EventInfo.Deserialize(raw);
+
+            return data;
+        }
+
+        public async Task<Dictionary<int, string>> GetPlayerMappings(string reportId, Tuple<int, int> timestamp)
+        {
+            Dictionary<int, string> mappings = new Dictionary<int, string>();
+            string raw = await this.MakeRequest(PlayerInfo.GetQuery(reportId, timestamp.Item1, timestamp.Item2));
+            PlayerDetails data = PlayerInfo.Deserialize(raw);
+
+            foreach (Healer h in data.healers)
+            {
+                mappings.Add(h.id, h.name);
+            }
+
+            foreach (Tank h in data.tanks)
+            {
+                mappings.Add(h.id, h.name);
+            }
+
+            foreach (Dp h in data.dps)
+            {
+                mappings.Add(h.id, h.name);
+            }
+
+            return mappings;
         }
 
         private async Task<string> MakeRequest(string query)
